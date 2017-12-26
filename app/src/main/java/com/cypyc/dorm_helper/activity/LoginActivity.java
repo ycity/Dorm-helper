@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText stuidText, pwdText;
     String stuid, pwd;
     private boolean flag = false;
+    private boolean ok = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,15 +72,15 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("errcode", "Click");
                 if (v.getId() == R.id.login_btn) {
-
                     stuidText = (EditText) findViewById(R.id.stu_id);
                     pwdText = (EditText) findViewById(R.id.password);
                     stuid = stuidText.getText().toString();
                     pwd = pwdText.getText().toString();
                     if (loginCheck()) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("stuid", stuid);
+                        startActivity(intent);
                     } else {
                         Toast.makeText(LoginActivity.this, "账号或密码输入错误！", Toast.LENGTH_LONG).show();
                     }
@@ -91,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
 
     boolean loginCheck() {
         final String address = "https://api.mysspku.com/index.php/V1/MobileCourse/Login" + "?username=" + stuid + "&password=" + pwd;
-        flag = false;
+        flag = ok = false;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -128,12 +129,13 @@ public class LoginActivity extends AppCompatActivity {
                     content = buffer.toString();
                     /* 创建输入流，并逐行读取站点中的信息，最终保存在content字符串中 END */
 
-                    loginReturn = JSONUtil.parseJSON(content);
+                    loginReturn = JSONUtil.parseLoginJSON(content);
                     Log.d("TAG", loginReturn.getErrcode());
                     if ("0".equals(loginReturn.getErrcode())) {
                         Log.d("TAG", "true");
                         flag = true;
                     }
+                    ok = true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -143,11 +145,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         }).start();
-
-        if (flag)  {
-            return true;
-        }
-        return false;
+        while (!ok);
+        return flag;
     }
 
     /**
@@ -165,6 +164,5 @@ public class LoginActivity extends AppCompatActivity {
         }
         /* 检查网络状态 end */
     }
-
 
 }
