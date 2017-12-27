@@ -2,8 +2,9 @@ package com.cypyc.dorm_helper.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,20 +14,18 @@ import com.cypyc.dorm_helper.R;
 import com.cypyc.dorm_helper.beans.LoginReturn;
 import com.cypyc.dorm_helper.util.JSONUtil;
 import com.cypyc.dorm_helper.util.NetUtil;
+import com.cypyc.dorm_helper.util.SSLTrustAllManager;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 /**
  * Created by yuncity on 2017/11/13.
@@ -34,11 +33,13 @@ import javax.net.ssl.X509TrustManager;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button loginBtn;
-    EditText stuidText, pwdText;
-    String stuid, pwd;
-    private boolean flag = false;
-    private boolean ok = false;
+    final int LOGIN = 1;
+    final int SHOW_ERR = 0;
+
+    private Button loginBtn;
+    private EditText stuidText, pwdText;
+    private String stuid, pwd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,24 +49,31 @@ public class LoginActivity extends AppCompatActivity {
         checkNetStat();
     }
 
-    public class SSLTrustAllManager implements X509TrustManager {
-
+    /* 创建一个Handler实例并重写其handleMessage函数 START */
+    private Handler handler = new Handler() {
+        /**
+         * methodName: handleMessage
+         * description: 通过message中保存的数值来进行处理
+         * parameters: @msg 一个Message
+         * return: void
+         */
         @Override
-        public void checkClientTrusted(X509Certificate[] arg0, String arg1)
-                throws CertificateException {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case LOGIN:
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("stuid", stuid);
+                    startActivity(intent);
+                    break;
+                case SHOW_ERR:
+                    Toast.makeText(LoginActivity.this, "账号或密码输入错误！", Toast.LENGTH_LONG).show();
+                    break;
+                default:
+                    break;
+            }
         }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] arg0, String arg1)
-                throws CertificateException {
-        }
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return null;
-        }
-
-    }
+    };
+    /* 创建一个Handler实例并重写其handleMessage函数 END */
 
     void setListener() {
         loginBtn = (Button) findViewById(R.id.login_btn);
@@ -77,22 +85,14 @@ public class LoginActivity extends AppCompatActivity {
                     pwdText = (EditText) findViewById(R.id.password);
                     stuid = stuidText.getText().toString();
                     pwd = pwdText.getText().toString();
-                    if (loginCheck()) {
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("stuid", stuid);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(LoginActivity.this, "账号或密码输入错误！", Toast.LENGTH_LONG).show();
-                    }
-                    //
+                    loginCheck();
                 }
             }
         });
     }
 
-    boolean loginCheck() {
+    void loginCheck() {
         final String address = "https://api.mysspku.com/index.php/V1/MobileCourse/Login" + "?username=" + stuid + "&password=" + pwd;
-        flag = ok = false;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -130,12 +130,16 @@ public class LoginActivity extends AppCompatActivity {
                     /* 创建输入流，并逐行读取站点中的信息，最终保存在content字符串中 END */
 
                     loginReturn = JSONUtil.parseLoginJSON(content);
-                    Log.d("TAG", loginReturn.getErrcode());
-                    if ("0".equals(loginReturn.getErrcode())) {
-                        Log.d("TAG", "true");
-                        flag = true;
+                    if (loginReturn != null) {
+                        Message msg = new Message();
+                        if ("0".equals(loginReturn.getErrcode())) {
+                            msg.what = LOGIN;
+                        } else {
+                            msg.what = SHOW_ERR;
+                        }
+                        handler.sendMessage(msg);
+                        handler.handleMessage(msg);
                     }
-                    ok = true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -145,8 +149,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         }).start();
-        while (!ok);
-        return flag;
     }
 
     /**

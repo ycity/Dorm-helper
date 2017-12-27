@@ -2,6 +2,8 @@ package com.cypyc.dorm_helper.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,26 +13,27 @@ import android.widget.TextView;
 import com.cypyc.dorm_helper.R;
 import com.cypyc.dorm_helper.beans.Student;
 import com.cypyc.dorm_helper.util.JSONUtil;
+import com.cypyc.dorm_helper.util.SSLTrustAllManager;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Student stu;
+    private final int UPDATE_INFO = 1;
+
     private String stuid;
-    private boolean ok = false;
+    private Student stu;
+
+    private Button selectDorm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,32 +46,44 @@ public class MainActivity extends AppCompatActivity {
         // updateStudentInfo();
     }
 
-    public class SSLTrustAllManager implements X509TrustManager {
-
+    /* 创建一个Handler实例并重写其handleMessage函数 START */
+    private Handler handler = new Handler() {
+        /**
+         * methodName: handleMessage
+         * description: 通过message中保存的数值来进行处理
+         * parameters: @msg 一个Message
+         * return: void
+         */
         @Override
-        public void checkClientTrusted(X509Certificate[] arg0, String arg1)
-                throws CertificateException {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case UPDATE_INFO:
+                    updateStudentInfo();
+                    if (stu.getRoom()==null || stu.getRoom().length()<3) {
+                        selectDorm.setEnabled(true);
+                    } else {
+                        selectDorm.setEnabled(false);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] arg0, String arg1)
-                throws CertificateException {
-        }
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return null;
-        }
-
-    }
+    };
+    /* 创建一个Handler实例并重写其handleMessage函数 END */
 
     void setListener() {
-        Button selectDorm = (Button) findViewById(R.id.select_dorm);
+        selectDorm = (Button) findViewById(R.id.select_dorm);
         selectDorm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.select_dorm) {
-                    // Intent intent = new Intent(MainActivity.this, )
+                    Intent intent = new Intent(MainActivity.this, DormActivity.class);
+                    intent.putExtra("stuid", stu.getStuid());
+                    intent.putExtra("name", stu.getName());
+                    intent.putExtra("gender", stu.getGender());
+                    intent.putExtra("vcode", stu.getVcode());
+                    startActivity(intent);
                 }
             }
         });
@@ -77,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
     private void getStudentInfo() {
         final String address = "https://api.mysspku.com/index.php/V1/MobileCourse/getDetail" + "?stuid=" + stuid;
         Log.d("TAG", address);
-        ok = false;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -113,11 +127,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                     content = buffer.toString();
                     /* 创建输入流，并逐行读取站点中的信息，最终保存在content字符串中 END */
-                    Log.d("TAGG", "22");
+
                     stu = JSONUtil.parseStudentJSON(content);
-                    // Log.d("TAG", loginReturn.getErrcode());
-                    ok = true;
-                    updateStudentInfo();
+                    if (stu != null) {
+                        Message msg = new Message();
+                        msg.what = UPDATE_INFO;
+                        handler.sendMessage(msg);
+                        handler.handleMessage(msg);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -127,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
-        // while (!ok);
     }
 
     private void updateStudentInfo() {
