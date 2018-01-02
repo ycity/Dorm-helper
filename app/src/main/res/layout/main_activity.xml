@@ -3,23 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
-        <TextView
-            android:layout_width="50dip"
-            android:layout_height="25dip"
-            android:textSize="20dip"
-            android:gravity="center"
-            />
-        <TextView
-            android:layout_width="150dip"
-            android:layout_height="40dip"
-            android:gravity="center"
-            />
-    </LinearLayout>
-    <LinearLayout
+        android:layout_marginTop="60px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -180,6 +164,7 @@
             />
     </LinearLayout>
     <LinearLayout
+        android:layout_marginTop="30px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

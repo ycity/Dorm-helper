@@ -8,12 +8,95 @@
         android:orientation="horizontal"
         android:layout_gravity="center">
         <TextView
+            android:layout_marginTop="40px"
             android:layout_width="250dip"
-            android:layout_height="60dip"
-            android:text="各楼层余量"
+            android:layout_height="40dip"
+            android:text="个人信息"
             android:textSize="25dip"
+            android:textColor="#1874CD"
+            android:gravity="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="70dip"
+            android:layout_height="25dip"
+            android:text="学号"
+            android:textSize="20dip"
             android:gravity="center"
             />
+        <TextView
+            android:id="@+id/dorm_stu_id"
+            android:layout_width="110dip"
+            android:layout_height="30dip"
+            android:text="N/A"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_width="70dip"
+            android:layout_height="25dip"
+            android:text="姓名"
+            android:textSize="20dip"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/dorm__name"
+            android:layout_width="110dip"
+            android:layout_height="30dip"
+            android:text="N/A"
+            android:gravity="center"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="70dip"
+            android:layout_height="25dip"
+            android:text="性别"
+            android:textSize="20dip"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/dorm_gender"
+            android:layout_width="110dip"
+            android:layout_height="30dip"
+            android:text="N/A"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_width="70dip"
+            android:layout_height="25dip"
+            android:text="校验码"
+            android:textSize="20dip"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/dorm_vcode"
+            android:layout_width="110dip"
+            android:layout_height="30dip"
+            android:text="N/A"
+            android:gravity="center"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="50px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="250dip"
+            android:layout_height="40dip"
+            android:text="各楼层余量"
+            android:textSize="25dip"
+            android:textColor="#1874CD"
+            android:gravity="center" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -30,16 +113,10 @@
         <TextView
             android:id="@+id/info_b5"
             android:text="N/A"
-            android:layout_width="150dip"
+            android:layout_width="80dip"
             android:layout_height="40dip"
             android:gravity="center"
             />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
         <TextView
             android:layout_width="70dip"
             android:layout_height="25dip"
@@ -50,7 +127,7 @@
         <TextView
             android:id="@+id/info_b8"
             android:text="N/A"
-            android:layout_width="150dip"
+            android:layout_width="80dip"
             android:layout_height="40dip"
             android:gravity="center"
             />
@@ -70,16 +147,10 @@
         <TextView
             android:id="@+id/info_b9"
             android:text="N/A"
-            android:layout_width="150dip"
+            android:layout_width="80dip"
             android:layout_height="40dip"
             android:gravity="center"
             />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
         <TextView
             android:layout_width="70dip"
             android:layout_height="25dip"
@@ -90,11 +161,12 @@
         <TextView
             android:id="@+id/info_b13"
             android:text="N/A"
-            android:layout_width="150dip"
+            android:layout_width="80dip"
             android:layout_height="40dip"
             android:gravity="center"
             />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,7 +182,18 @@
         <TextView
             android:id="@+id/info_b14"
             android:text="N/A"
-            android:layout_width="150dip"
+            android:layout_width="80dip"
+            android:layout_height="40dip"
+            android:gravity="center"
+            />        
+        <TextView
+            android:layout_width="70dip"
+            android:layout_height="25dip"
+            android:textSize="20dip"
+            android:gravity="center"
+        />
+        <TextView
+            android:layout_width="80dip"
             android:layout_height="40dip"
             android:gravity="center"
             />
@@ -125,6 +208,120 @@
             android:text="刷新"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="50px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dip"
+            android:text="添加室友（选填）"
+            android:textSize="25dip"
+            android:textColor="#1874CD"
+            android:gravity="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="70dip"
+            android:layout_height="25dip"
+            android:text="学号1"
+            android:textSize="20dip"
+            android:gravity="center"
+            />
+        <EditText
+            android:id="@+id/stuid1"
+            android:layout_width="120dip"
+            android:layout_height="40dip"
+            android:gravity="center"
+            android:inputType="numberDecimal" />
+        <TextView
+            android:layout_marginLeft="20px"
+            android:layout_width="80dip"
+            android:layout_height="25dip"
+            android:text="校验码1"
+            android:textSize="20dip"
+            android:gravity="center"
+            />
+        <EditText
+            android:id="@+id/vcode1"
+            android:layout_width="70dip"
+            android:layout_height="40dip"
+            android:gravity="center"
+             />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="70dip"
+            android:layout_height="25dip"
+            android:text="学号2"
+            android:textSize="20dip"
+            android:gravity="center"
+            />
+        <EditText
+            android:id="@+id/stuid2"
+            android:layout_width="120dip"
+            android:layout_height="40dip"
+            android:gravity="center"
+            android:inputType="numberDecimal" />
+        <TextView
+            android:layout_marginLeft="20px"
+            android:layout_width="80dip"
+            android:layout_height="25dip"
+            android:text="校验码2"
+            android:textSize="20dip"
+            android:gravity="center"
+            />
+        <EditText
+            android:id="@+id/vcode2"
+            android:layout_width="70dip"
+            android:layout_height="40dip"
+            android:gravity="center"
+             />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="70dip"
+            android:layout_height="25dip"
+            android:text="学号3"
+            android:textSize="20dip"
+            android:gravity="center"
+            />
+        <EditText
+            android:id="@+id/stuid3"
+            android:layout_width="120dip"
+            android:layout_height="40dip"
+            android:gravity="center"
+            android:inputType="numberDecimal" />
+        <TextView
+            android:layout_marginLeft="20px"
+            android:layout_width="80dip"
+            android:layout_height="25dip"
+            android:text="校验码3"
+            android:textSize="20dip"
+            android:gravity="center"
+            />
+        <EditText
+            android:id="@+id/vcode3"
+            android:layout_width="70dip"
+            android:layout_height="40dip"
             android:gravity="center"
             />
     </LinearLayout>

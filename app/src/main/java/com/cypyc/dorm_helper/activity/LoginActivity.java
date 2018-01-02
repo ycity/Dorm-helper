@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+        initView();
         setListener();
         checkNetStat();
     }
@@ -75,16 +78,56 @@ public class LoginActivity extends AppCompatActivity {
     };
     /* 创建一个Handler实例并重写其handleMessage函数 END */
 
-    void setListener() {
+    void initView() {
+        stuidText = (EditText) findViewById(R.id.stu_id);
+        pwdText = (EditText) findViewById(R.id.password);
         loginBtn = (Button) findViewById(R.id.login_btn);
+    }
+
+    void setListener() {
+        stuidText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                stuid = s.toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        pwdText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String str = s.toString();
+                if (str.indexOf("\r")>=0 || str.indexOf("\n")>=0) {
+                    stuid = stuidText.getText().toString();
+                    pwd = pwdText.getText().toString().replace("\n","").replace("\r","");
+                    loginCheck();
+                }
+            }
+        });
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.login_btn) {
-                    stuidText = (EditText) findViewById(R.id.stu_id);
-                    pwdText = (EditText) findViewById(R.id.password);
                     stuid = stuidText.getText().toString();
-                    pwd = pwdText.getText().toString();
+                    pwd = pwdText.getText().toString().replace("\n","").replace("\r","");
                     loginCheck();
                 }
             }
