@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.cypyc.dorm_helper.R;
 import com.cypyc.dorm_helper.beans.LoginReturn;
+import com.cypyc.dorm_helper.beans.Student;
 import com.cypyc.dorm_helper.util.JSONUtil;
 import com.cypyc.dorm_helper.util.NetUtil;
 import com.cypyc.dorm_helper.util.SSLTrustAllManager;
@@ -35,13 +37,15 @@ import javax.net.ssl.TrustManager;
 
 public class LoginActivity extends AppCompatActivity {
 
+    final int PWD_ERR = 0;
     final int LOGIN = 1;
-    final int SHOW_ERR = 0;
+    final int CHECK_STUID = 2;
 
     private Button loginBtn;
     private EditText stuidText, pwdText;
     private String stuid, pwd;
 
+    private Student stu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +67,20 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
+                case CHECK_STUID:
+                    if (stuid.equals(stu.getStuid())) {
+                        pwdCheck();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "用户名不存在！", Toast.LENGTH_LONG).show();
+                    }
+                    break;
                 case LOGIN:
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("stuid", stuid);
                     startActivity(intent);
                     break;
-                case SHOW_ERR:
-                    Toast.makeText(LoginActivity.this, "账号或密码输入错误！", Toast.LENGTH_LONG).show();
+                case PWD_ERR:
+                    Toast.makeText(LoginActivity.this, "密码错误！", Toast.LENGTH_LONG).show();
                     break;
                 default:
                     break;
@@ -118,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (str.indexOf("\r")>=0 || str.indexOf("\n")>=0) {
                     stuid = stuidText.getText().toString();
                     pwd = pwdText.getText().toString().replace("\n","").replace("\r","");
-                    loginCheck();
+                    stuidCheck();
                 }
             }
         });
@@ -128,13 +139,68 @@ public class LoginActivity extends AppCompatActivity {
                 if (v.getId() == R.id.login_btn) {
                     stuid = stuidText.getText().toString();
                     pwd = pwdText.getText().toString().replace("\n","").replace("\r","");
-                    loginCheck();
+                    stuidCheck();
                 }
             }
         });
     }
 
-    void loginCheck() {
+    void stuidCheck() {
+        final String address = "https://api.mysspku.com/index.php/V1/MobileCourse/getDetail" + "?stuid=" + stuid;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpsURLConnection con = null;
+                try {
+                    /* 设置连接参数 START */
+                    URL url = new URL(address);
+                    SSLContext context  = SSLContext.getInstance("TLS");
+                    context.init(null, new TrustManager[] { new SSLTrustAllManager() }, null);
+                    HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
+                    HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                        @Override
+                        public boolean verify(String arg0, SSLSession arg1) {
+                            return true;
+                        }
+                    });
+                    con = (HttpsURLConnection) url.openConnection();
+                    con.setDoInput(true);
+                    con.setDoOutput(false);
+                    con.setRequestMethod("GET");
+                    con.setConnectTimeout(8000);
+                    con.setReadTimeout(8000);
+                    /* 设置连接参数 END */
+                    Log.d("TAGG", "11");
+                    /* 创建输入流，并逐行读取站点中的信息，最终保存在content字符串中 START */
+                    InputStream in = con.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    StringBuilder buffer = new StringBuilder();
+                    String line, content;
+                    while ((line = reader.readLine()) != null) {
+                        buffer.append(line);
+                    }
+                    content = buffer.toString();
+                    /* 创建输入流，并逐行读取站点中的信息，最终保存在content字符串中 END */
+
+                    stu = JSONUtil.parseStudentJSON(content);
+                    if (stu != null) {
+                        Message msg = new Message();
+                        msg.what = CHECK_STUID;
+                        handler.sendMessage(msg);
+                        handler.handleMessage(msg);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (con != null) {
+                        con.disconnect();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    void pwdCheck() {
         final String address = "https://api.mysspku.com/index.php/V1/MobileCourse/Login" + "?username=" + stuid + "&password=" + pwd;
         new Thread(new Runnable() {
             @Override
@@ -178,7 +244,7 @@ public class LoginActivity extends AppCompatActivity {
                         if ("0".equals(loginReturn.getErrcode())) {
                             msg.what = LOGIN;
                         } else {
-                            msg.what = SHOW_ERR;
+                            msg.what = PWD_ERR;
                         }
                         handler.sendMessage(msg);
                         handler.handleMessage(msg);

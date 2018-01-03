@@ -98,23 +98,23 @@ public class DormActivity extends AppCompatActivity {
                 case CHECK_STU1:
                     if (!"".equals(stuid1)) {
                         if ("40001".equals(stu.getErrcode())) {
-                            Toast.makeText(DormActivity.this, "第1名室友信息填写错误！该学号不存在！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第1名室友信息填写错误！该学号不存在！", Toast.LENGTH_LONG).show();
                             break;
                         }
                         if (stuid.equals(stuid1)) {
-                            Toast.makeText(DormActivity.this, "第1名室友信息填写错误！不能选自己当室友！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第1名室友信息填写错误！不能选自己当室友！", Toast.LENGTH_LONG).show();
                             break;
                         }
                         if (!vcode1.equals(stu.getVcode())) {
-                            Toast.makeText(DormActivity.this, "第1名室友信息填写错误！校验码不正确！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第1名室友信息填写错误！校验码不正确！", Toast.LENGTH_LONG).show();
                             break;
                         }
                         if (!(stu.getRoom()==null || "".equals(stu.getRoom()))) {
-                            Toast.makeText(DormActivity.this, "第1名室友已经选过宿舍！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第1名室友已经选过宿舍！", Toast.LENGTH_LONG).show();
                             break;
                         }
                         if (!stuGender.equals(stu.getGender())) {
-                            Toast.makeText(DormActivity.this, "第1名室友信息填写错误！室友不能为异性！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第1名室友信息填写错误！室友不能为异性！", Toast.LENGTH_LONG).show();
                             break;
                         }
                     }
@@ -123,23 +123,23 @@ public class DormActivity extends AppCompatActivity {
                 case CHECK_STU2:
                     if (!"".equals(stuid2)) {
                         if ("40001".equals(stu.getErrcode())) {
-                            Toast.makeText(DormActivity.this, "第2名室友信息填写错误！该学号不存在！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第2名室友信息填写错误！该学号不存在！", Toast.LENGTH_LONG).show();
                             break;
                         }
                         if (stuid.equals(stuid2)) {
-                            Toast.makeText(DormActivity.this, "第2名室友信息填写错误！不能选自己当室友！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第2名室友信息填写错误！不能选自己当室友！", Toast.LENGTH_LONG).show();
                             break;
                         }
                         if (!vcode2.equals(stu.getVcode())) {
-                            Toast.makeText(DormActivity.this, "第2名室友信息填写错误！校验码不正确！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第2名室友信息填写错误！校验码不正确！", Toast.LENGTH_LONG).show();
                             break;
                         }
                         if (!(stu.getRoom()==null || "".equals(stu.getRoom()))) {
-                            Toast.makeText(DormActivity.this, "第2名室友已经选过宿舍！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第2名室友已经选过宿舍！", Toast.LENGTH_LONG).show();
                             break;
                         }
                         if (!stuGender.equals(stu.getGender())) {
-                            Toast.makeText(DormActivity.this, "第2名室友信息填写错误！室友不能为异性！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第2名室友信息填写错误！室友不能为异性！", Toast.LENGTH_LONG).show();
                             break;
                         }
                     }
@@ -148,23 +148,23 @@ public class DormActivity extends AppCompatActivity {
                 case CHECK_STU3:
                     if (!"".equals(stuid3)) {
                         if ("40001".equals(stu.getErrcode())) {
-                            Toast.makeText(DormActivity.this, "第3名室友信息填写错误！该学号不存在！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第3名室友信息填写错误！该学号不存在！", Toast.LENGTH_LONG).show();
                             break;
                         }
                         if (stuid.equals(stuid3)) {
-                            Toast.makeText(DormActivity.this, "第3名室友信息填写错误！不能选自己当室友！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第3名室友信息填写错误！不能选自己当室友！", Toast.LENGTH_LONG).show();
                             break;
                         }
                         if (!vcode3.equals(stu.getVcode())) {
-                            Toast.makeText(DormActivity.this, "第3名室友信息填写错误！校验码不正确！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第3名室友信息填写错误！校验码不正确！", Toast.LENGTH_LONG).show();
                             break;
                         }
                         if (!(stu.getRoom()==null || "".equals(stu.getRoom()))) {
-                            Toast.makeText(DormActivity.this, "第3名室友已经选过宿舍！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第3名室友已经选过宿舍！", Toast.LENGTH_LONG).show();
                             break;
                         }
                         if (!stuGender.equals(stu.getGender())) {
-                            Toast.makeText(DormActivity.this, "第3名室友信息填写错误！室友不能为异性！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DormActivity.this, "第3名室友信息填写错误！室友不能为异性！", Toast.LENGTH_LONG).show();
                             break;
                         }
                     }
@@ -253,9 +253,6 @@ public class DormActivity extends AppCompatActivity {
                     vcode1 = vcodeEditText1.getText().toString();
                     vcode2 = vcodeEditText2.getText().toString();
                     vcode3 = vcodeEditText3.getText().toString();
-                    Log.d("stuid1", stuid1);
-                    Log.d("stuid2", stuid2);
-                    Log.d("stuid3", stuid3);
 
                     if (!("".equals(stuid1))) {
                         ++stuNum;
@@ -268,7 +265,7 @@ public class DormActivity extends AppCompatActivity {
                     }
                     getRoomInfo();
                     if (stuNum > bedNum) {
-                        Toast.makeText(DormActivity.this, choseBuilding+"已没有空位！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DormActivity.this, choseBuilding+"已没有空位！", Toast.LENGTH_LONG).show();
                         return ;
                     }
                     getStu1();
@@ -358,7 +355,6 @@ public class DormActivity extends AppCompatActivity {
 
     private void getStu1() {
         final String address = "https://api.mysspku.com/index.php/V1/MobileCourse/getDetail" + "?stuid=" + stuid1;
-        Log.d("TAG1", address);
         if (!"".equals(stuid1)) {
             new Thread(new Runnable() {
                 @Override
@@ -401,7 +397,6 @@ public class DormActivity extends AppCompatActivity {
                             Message msg = new Message();
                             msg.what = CHECK_STU1;
                             handler.sendMessage(msg);
-//                            handler.handleMessage(msg);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -463,7 +458,6 @@ public class DormActivity extends AppCompatActivity {
                             Message msg = new Message();
                             msg.what = CHECK_STU2;
                             handler.sendMessage(msg);
-                        //    handler.handleMessage(msg);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -500,7 +494,6 @@ public class DormActivity extends AppCompatActivity {
                                 return true;
                             }
                         });
-                        // Log.d("TAG", "11");
                         con = (HttpsURLConnection) url.openConnection();
                         con.setDoInput(true);
                         con.setDoOutput(false);
@@ -508,7 +501,7 @@ public class DormActivity extends AppCompatActivity {
                         con.setConnectTimeout(8000);
                         con.setReadTimeout(8000);
                         /* 设置连接参数 END */
-                        Log.d("TAGG", "11");
+
                         /* 创建输入流，并逐行读取站点中的信息，最终保存在content字符串中 START */
                         InputStream in = con.getInputStream();
                         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -525,7 +518,6 @@ public class DormActivity extends AppCompatActivity {
                             Message msg = new Message();
                             msg.what = CHECK_STU3;
                             handler.sendMessage(msg);
-                         //   handler.handleMessage(msg);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
