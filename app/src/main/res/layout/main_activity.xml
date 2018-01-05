@@ -174,5 +174,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="选宿舍"/>
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注销"/>
     </LinearLayout>
 </LinearLayout>

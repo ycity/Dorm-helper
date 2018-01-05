@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private String stuid;
     private Student stu;
 
-    private Button selectDorm;
+    private Button selectDorm, logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +83,16 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("name", stu.getName());
                     intent.putExtra("gender", stu.getGender());
                     intent.putExtra("vcode", stu.getVcode());
+                    startActivity(intent);
+                }
+            }
+        });
+        logout = (Button) findViewById(R.id.logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.logout) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
             }
